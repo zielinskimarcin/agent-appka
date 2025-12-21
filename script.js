@@ -1,5 +1,5 @@
 const fileInput = document.getElementById('cv-file');
-const WEBHOOK_URL = 'https://mz11.app.n8n.cloud/webhook-test/cv-upload'; // Wklej swój adres Webhooka
+const WEBHOOK_URL = 'https://mz11.app.n8n.cloud/webhook/cv-upload'; // Wklej swój adres Webhooka
 
 fileInput.addEventListener('change', async (e) => {
     const file = e.target.files[0];
