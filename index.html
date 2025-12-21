@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Mój Agent AI</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Agent AI - Rekrutacja</h1>
+    <p>Witaj! Jestem Twoim asystentem. Prześlij swoje CV, abyśmy mogli zacząć.</p>
+
+    <div id="ai-container">
+        <label for="cv-upload">Wgraj swoje CV (PDF):</label>
+        <input type="file" id="cv-upload" accept=".pdf">
+        
+        <button onclick="processCV()">Analizuj CV</button>
+        
+        <div id="output">
+            </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
