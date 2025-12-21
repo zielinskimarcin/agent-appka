@@ -2,21 +2,61 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <title>Mój Agent AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agent - Recruitment</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body>
-    <h1>Agent AI - Rekrutacja</h1>
-    <p>Witaj! Jestem Twoim asystentem. Prześlij swoje CV, abyśmy mogli zacząć.</p>
 
-    <div id="ai-container">
-        <label for="cv-upload">Wgraj swoje CV (PDF):</label>
-        <input type="file" id="cv-upload" accept=".pdf">
-        
-        <button onclick="processCV()">Analizuj CV</button>
-        
-        <div id="output">
+    <div class="container">
+        <aside class="sidebar">
+            <div class="sidebar-top">
+                <span class="material-symbols-outlined icon">edit_square</span>
+                <span class="material-symbols-outlined icon">search</span>
             </div>
+            <div class="sidebar-bottom">
+                <div class="user-avatar">B</div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="top-bar">
+                <span>AI Agent 1.0 <small>Thinking...</small></span>
+            </header>
+
+            <section class="chat-area">
+                <h1>Witaj! Jak mogę Ci dziś pomóc?</h1>
+
+                <div class="input-container">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Zapytaj o cokolwiek...">
+                        <div class="search-tools">
+                            <span class="material-symbols-outlined">add</span>
+                            <span class="material-symbols-outlined">psychology</span>
+                            <span>Thinking</span>
+                            <div class="spacer"></div>
+                            <span class="material-symbols-outlined">mic</span>
+                            <button class="send-btn">
+                                <span class="material-symbols-outlined">arrow_upward</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="upload-section">
+                        <input type="file" id="cv-upload" hidden accept=".pdf,.doc,.docx">
+                        <button class="cv-btn" onclick="document.getElementById('cv-upload').click()">
+                            <span class="material-symbols-outlined">share_reviews</span>
+                            Wgraj CV
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="disclaimer">
+                Agent AI może popełniać błędy. Sprawdź ważne informacje.
+            </footer>
+        </main>
     </div>
 
     <script src="script.js"></script>
