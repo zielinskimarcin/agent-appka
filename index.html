@@ -4,51 +4,260 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI CV Analyzer</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20,300,0,0" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <style>
+        :root {
+            --primary: #0071e3;
+            --bg: #f5f5f7;
+            --card: #ffffff;
+            --text: #1d1d1f;
+            --text-secondary: #86868b;
+            --border: #d2d2d7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-card {
+            background: var(--card);
+            width: 100%;
+            max-width: 500px;
+            padding: 40px;
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+            text-align: center;
+        }
+
+        .logo {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 40px;
+            display: block;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 16px;
+            margin-bottom: 32px;
+            line-height: 1.5;
+        }
+
+        /* Dropzone Styling */
+        .drop-area {
+            border: 2px dashed var(--border);
+            border-radius: 20px;
+            padding: 40px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            background: #fafafa;
+        }
+
+        .drop-area:hover {
+            border-color: var(--primary);
+            background: #f0f7ff;
+        }
+
+        .drop-area .icon {
+            font-size: 48px;
+            color: var(--primary);
+            margin-bottom: 16px;
+        }
+
+        .drop-area p {
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .file-limit {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 8px;
+        }
+
+        /* Input area */
+        .extra-input {
+            margin-top: 24px;
+            width: 100%;
+        }
+
+        .extra-input input {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        .extra-input input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Action Button */
+        .upload-btn {
+            width: 100%;
+            background: var(--text);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Feedback UI */
+        .selected-file {
+            display: none;
+            margin-top: 15px;
+            padding: 10px;
+            background: #e8f3ff;
+            border-radius: 10px;
+            font-size: 13px;
+            color: var(--primary);
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+    </style>
 </head>
 <body>
 
-    <div class="container">
-        <header>
-            <div class="logo">cv.ai</div>
-        </header>
+    <div class="main-card">
+        <span class="logo">AI Recruiter</span>
+        <h1>Analiza CV</h1>
+        <p class="subtitle">Wgraj dokument kandydata, aby otrzymać błyskawiczną analizę umiejętności.</p>
 
-        <main>
-            <section class="hero">
-                <h1>Analiza CV przez AI</h1>
-                <p>Wgraj plik PDF, aby wyodrębnić kluczowe dane i ocenić kandydata.</p>
-            </section>
+        <div class="drop-area" onclick="document.getElementById('cv-file').click()" id="drop-zone">
+            <span class="material-symbols-rounded icon">cloud_upload</span>
+            <p>Kliknij lub przeciągnij plik</p>
+            <div class="file-limit">PDF lub DOCX (max. 5MB)</div>
+            <input type="file" id="cv-file" hidden accept=".pdf,.doc,.docx">
+        </div>
 
-            <div class="upload-zone" id="drop-zone">
-                <input type="file" id="cv-file" hidden accept=".pdf,.doc,.docx">
-                <div class="upload-content">
-                    <span class="material-symbols-outlined icon-display">upload_file</span>
-                    <h3>Wybierz plik lub przeciągnij go tutaj</h3>
-                    <p>Obsługiwane formaty: PDF, DOCX (Max 5MB)</p>
-                    <button class="primary-btn" onclick="document.getElementById('cv-file').click()">Wybierz CV</button>
-                </div>
-                
-                <div class="input-minimal">
-                    <input type="text" id="chat-input" placeholder="Dodatkowe wytyczne dla AI (opcjonalnie)...">
-                </div>
-            </div>
+        <div id="file-display" class="selected-file">
+            <span class="material-symbols-rounded" style="font-size: 18px;">description</span>
+            <span id="file-name"></span>
+        </div>
 
-            <div id="file-info" class="file-info-badge" style="display: none;">
-                <span class="material-symbols-outlined">check_circle</span>
-                <span id="file-name">nazwa_pliku.pdf</span>
-                <button id="send-btn" class="send-action-btn">Analizuj teraz</button>
-            </div>
-        </main>
+        <div class="extra-input">
+            <input type="text" id="chat-input" placeholder="Wpisz wymagania (np. Python, 3 lata exp)...">
+        </div>
+
+        <button id="send-btn" class="upload-btn" disabled>
+            <span class="material-symbols-rounded">analytics</span>
+            Rozpocznij analizę
+        </button>
 
         <footer>
-            <p>Bezpieczne przetwarzanie danych &bull; Powered by AI</p>
+            Bezpieczne połączenie z silnikiem n8n AI
         </footer>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        const fileInput = document.getElementById('cv-file');
+        const sendBtn = document.getElementById('send-btn');
+        const fileDisplay = document.getElementById('file-display');
+        const fileNameText = document.getElementById('file-name');
+        const WEBHOOK_URL = 'https://mz11.app.n8n.cloud/webhook/cv-upload';
+
+        // Reakcja na wybranie pliku
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
+            if (file) {
+                fileNameText.textContent = file.name;
+                fileDisplay.style.display = 'flex';
+                sendBtn.disabled = false;
+                sendBtn.style.background = '#0071e3'; // Zmień kolor na niebieski gdy gotowe
+            }
+        });
+
+        // Wysyłka
+        sendBtn.addEventListener('click', async () => {
+            const file = fileInput.files[0];
+            const query = document.getElementById('chat-input').value;
+
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = "Przetwarzanie...";
+
+            const formData = new FormData();
+            formData.append('cv_file', file);
+            formData.append('user_query', query);
+
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert("Analiza wysłana pomyślnie!");
+                } else {
+                    alert("Błąd serwera: " + response.status);
+                }
+            } catch (error) {
+                alert("Błąd połączenia. Sprawdź internet.");
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<span class="material-symbols-rounded">analytics</span> Rozpocznij analizę';
+            }
+        });
+
+        // Prosty Drag & Drop
+        const dropZone = document.getElementById('drop-zone');
+        ['dragover', 'dragleave', 'drop'].forEach(name => {
+            dropZone.addEventListener(name, e => e.preventDefault());
+        });
+
+        dropZone.addEventListener('drop', e => {
+            fileInput.files = e.dataTransfer.files;
+            fileInput.dispatchEvent(new Event('change'));
+        });
+    </script>
 </body>
 </html>
