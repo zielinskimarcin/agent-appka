@@ -8,11 +8,12 @@
     <style>
         :root {
             --bg: #ffffff;
-            /* Jasny, czerwonawy odcień */
-            --container-bg: #fff5f5; 
-            --container-border: #feb2b2;
-            --accent: #f56565;
-            --text-main: #2d3748;
+            /* Minimalistyczna szarość */
+            --container-bg: #f9fafb; 
+            --container-border: #e5e7eb;
+            --accent: #111827;
+            --text-main: #111827;
+            --text-muted: #6b7280;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -26,75 +27,85 @@
             min-height: 100vh;
         }
 
-        /* Centralny moduł */
         .upload-container {
             background: var(--container-bg);
             width: 100%;
-            max-width: 500px;
-            border: 2px solid var(--container-border);
-            border-radius: 16px;
-            padding: 40px;
+            max-width: 450px;
+            border: 1px solid var(--container-border);
+            border-radius: 12px;
+            padding: 32px;
             display: flex;
             flex-direction: column;
             align-items: center;
             text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        /* Nagłówek */
+        .header-text {
+            margin-bottom: 24px;
+        }
+
+        .header-text p {
+            font-size: 15px;
+            color: var(--text-muted);
+            font-weight: 400;
         }
 
         .drop-zone {
             width: 100%;
             border: 2px dashed var(--container-border);
-            border-radius: 12px;
-            padding: 50px 20px;
+            border-radius: 8px;
+            padding: 40px 20px;
             cursor: pointer;
             transition: all 0.2s ease;
-            background: rgba(255, 255, 255, 0.5);
+            background: #ffffff;
         }
 
         .drop-zone:hover {
-            background: #fff;
-            border-color: var(--accent);
+            border-color: #9ca3af;
         }
 
         .file-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
+            font-size: 32px;
+            margin-bottom: 12px;
             display: block;
+            opacity: 0.7;
         }
 
-        .drop-zone p {
-            font-size: 15px;
-            color: #718096;
-            font-weight: 500;
+        .drop-zone span {
+            font-size: 14px;
+            color: var(--text-muted);
         }
 
-        /* Przycisk akcji */
+        /* Przycisk */
         .btn-primary {
             width: 100%;
             background: var(--accent);
             color: white;
             border: none;
-            padding: 16px;
-            border-radius: 10px;
-            font-weight: 600;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: 500;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 25px;
-            transition: transform 0.1s, opacity 0.2s;
+            font-size: 15px;
+            margin-top: 24px;
+            transition: opacity 0.2s;
         }
 
-        .btn-primary:active { transform: scale(0.98); }
+        .btn-primary:hover { opacity: 0.9; }
 
         .btn-primary:disabled {
-            background: #cbd5e0;
+            background: #e5e7eb;
+            color: #9ca3af;
             cursor: not-allowed;
         }
 
-        /* Status pliku */
         #file-status {
-            margin-top: 15px;
-            font-size: 14px;
-            color: var(--accent);
-            font-weight: 600;
+            margin-top: 16px;
+            font-size: 13px;
+            color: var(--text-main);
+            font-weight: 500;
             display: none;
         }
     </style>
@@ -102,16 +113,20 @@
 <body>
 
     <main class="upload-container">
+        <div class="header-text">
+            <p>Wrzuć CV, aby rozpocząć proces</p>
+        </div>
+
         <div class="drop-zone" onclick="document.getElementById('cv-file').click()" id="drop-area">
-            <span class="file-icon">📄</span>
-            <p>Wybierz plik CV (PDF)</p>
+            <span class="file-icon">📁</span>
+            <span>Kliknij, aby wybrać plik PDF</span>
             <input type="file" id="cv-file" hidden accept=".pdf">
         </div>
 
-        <div id="file-status">Wybrano: <span id="filename"></span></div>
+        <div id="file-status">Plik: <span id="filename"></span></div>
 
         <button id="send-btn" class="btn-primary" disabled>
-            Wyślij CV
+            Wyślij aplikację
         </button>
     </main>
 
@@ -155,12 +170,11 @@
             } catch (error) {
                 alert("Błąd połączenia.");
             } finally {
-                sendBtn.innerHTML = "Wyślij CV";
+                sendBtn.innerHTML = "Wyślij aplikację";
                 sendBtn.disabled = false;
             }
         });
 
-        // Przeciągnij i upuść
         const dropArea = document.getElementById('drop-area');
         ['dragover', 'drop'].forEach(evt => dropArea.addEventListener(evt, e => e.preventDefault()));
         dropArea.addEventListener('drop', e => {
