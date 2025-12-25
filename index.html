@@ -8,11 +8,11 @@
     <style>
         :root {
             --bg: #ffffff;
-            --secondary-bg: #f8f9fa;
-            --dark-card: #111111;
-            --accent: #ffca28; /* Kolor Firebase Gold */
-            --text-main: #1f1f1f;
-            --text-muted: #616161;
+            /* Jasny, czerwonawy odcień */
+            --container-bg: #fff5f5; 
+            --container-border: #feb2b2;
+            --accent: #f56565;
+            --text-main: #2d3748;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -21,138 +21,99 @@
             background-color: var(--bg);
             color: var(--text-main);
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
 
-        /* Top Navigation Bar */
-        nav {
-            width: 100%;
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .logo { font-weight: 600; font-size: 18px; color: #000; }
-
-        /* Hero Section */
-        header {
-            text-align: center;
-            margin: 80px 0 40px;
-        }
-
-        header h1 {
-            font-size: 40px;
-            font-weight: 600;
-            letter-spacing: -0.03em;
-            margin-bottom: 16px;
-        }
-
-        header p { color: var(--text-muted); font-size: 18px; }
-
-        /* Central Container - Firebase Style */
+        /* Centralny moduł */
         .upload-container {
-            background: var(--dark-card);
+            background: var(--container-bg);
             width: 100%;
-            max-width: 800px;
-            border-radius: 12px;
+            max-width: 500px;
+            border: 2px solid var(--container-border);
+            border-radius: 16px;
             padding: 40px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            color: white;
-            position: relative;
+            text-align: center;
         }
 
         .drop-zone {
             width: 100%;
-            border: 1px solid #333;
-            border-radius: 8px;
-            padding: 60px 20px;
-            text-align: center;
+            border: 2px dashed var(--container-border);
+            border-radius: 12px;
+            padding: 50px 20px;
             cursor: pointer;
-            transition: background 0.2s;
-            margin-bottom: 20px;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.5);
         }
 
-        .drop-zone:hover { background: #1a1a1a; }
-
-        .drop-zone p { color: #aaa; font-size: 14px; }
+        .drop-zone:hover {
+            background: #fff;
+            border-color: var(--accent);
+        }
 
         .file-icon {
-            font-size: 32px;
-            margin-bottom: 12px;
+            font-size: 40px;
+            margin-bottom: 15px;
             display: block;
         }
 
-        /* Action Buttons */
-        .btn-primary {
-            background: var(--accent);
-            color: #000;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 14px;
-            transition: opacity 0.2s;
+        .drop-zone p {
+            font-size: 15px;
+            color: #718096;
+            font-weight: 500;
         }
 
+        /* Przycisk akcji */
+        .btn-primary {
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 25px;
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .btn-primary:active { transform: scale(0.98); }
+
         .btn-primary:disabled {
-            background: #444;
-            color: #888;
+            background: #cbd5e0;
             cursor: not-allowed;
         }
 
-        /* Footer */
-        footer {
-            margin-top: auto;
-            padding: 40px;
-            color: var(--text-muted);
-            font-size: 13px;
-        }
-
+        /* Status pliku */
         #file-status {
             margin-top: 15px;
             font-size: 14px;
             color: var(--accent);
+            font-weight: 600;
             display: none;
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">cv.ai</div>
-        <div style="font-size: 14px; color: #666;">Support</div>
-    </nav>
-
-    <header>
-        <h1>Dopasuj kandydata</h1>
-        <p>Wgraj CV w formacie PDF, aby rozpocząć proces.</p>
-    </header>
-
     <main class="upload-container">
         <div class="drop-zone" onclick="document.getElementById('cv-file').click()" id="drop-area">
             <span class="file-icon">📄</span>
-            <p id="instruction">Wybierz plik CV lub przeciągnij go tutaj</p>
+            <p>Wybierz plik CV (PDF)</p>
             <input type="file" id="cv-file" hidden accept=".pdf">
         </div>
 
         <div id="file-status">Wybrano: <span id="filename"></span></div>
 
-        <button id="send-btn" class="btn-primary" disabled style="margin-top: 20px;">
-            Zatwierdź i wyślij
+        <button id="send-btn" class="btn-primary" disabled>
+            Wyślij CV
         </button>
     </main>
-
-    <footer>
-        &copy; 2025 CV Analyzer System
-    </footer>
 
     <script>
         const fileInput = document.getElementById('cv-file');
@@ -161,8 +122,8 @@
         const filenameSpan = document.getElementById('filename');
         const WEBHOOK_URL = 'https://mz11.app.n8n.cloud/webhook/cv-upload';
 
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
+        fileInput.addEventListener('change', () => {
+            const file = fileInput.files[0];
             if (file) {
                 filenameSpan.textContent = file.name;
                 fileStatus.style.display = 'block';
@@ -187,19 +148,19 @@
                 });
 
                 if (response.ok) {
-                    alert("Plik został przesłany.");
+                    alert("Sukces!");
                 } else {
                     alert("Błąd: " + response.status);
                 }
             } catch (error) {
                 alert("Błąd połączenia.");
             } finally {
-                sendBtn.innerHTML = "Zatwierdź i wyślij";
+                sendBtn.innerHTML = "Wyślij CV";
                 sendBtn.disabled = false;
             }
         });
 
-        // Drag & Drop support
+        // Przeciągnij i upuść
         const dropArea = document.getElementById('drop-area');
         ['dragover', 'drop'].forEach(evt => dropArea.addEventListener(evt, e => e.preventDefault()));
         dropArea.addEventListener('drop', e => {
